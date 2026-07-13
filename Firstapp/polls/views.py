@@ -1,3 +1,4 @@
+from django.core.checks import templates
 from django.shortcuts import render
 
 # Create your views here.
@@ -16,14 +17,14 @@ from django.shortcuts import get_object_or_404, render
 
 # def index(request):
 #     return HttpResponse("Hello, world. You're at the polls index.")
-def index(request):
-    latest_question_list = Question.objects.order_by("-pub_date")[:5]
-    context = {"latest_question_list": latest_question_list}
-    return render(request, "polls/index.html", context)
 # def index(request):
 #     latest_question_list = Question.objects.order_by("-pub_date")[:5]
-#     output = ", ".join([q.question_text for q in latest_question_list])
-#     return HttpResponse(output)
+#     context = {"latest_question_list": latest_question_list}
+#     return render(request, "polls/index.html", context)
+def index(request):
+    latest_question_list = Question.objects.order_by("-pub_date")[:5]
+    output = ", ".join([q.question_text for q in latest_question_list])
+    return HttpResponse(output)
 # def detail(request, question_id):
 #     try:
 #         question = Question.objects.get(pk=question_id)
@@ -68,8 +69,6 @@ def results(request, question_id):
     return render(request, "polls/results.html", {"question": question})
 
 
-
-
 class IndexView(generic.ListView):
     template_name = "polls/index.html"
     context_object_name = "latest_question_list"
@@ -94,3 +93,8 @@ class DetailView(generic.DetailView):
 class ResultsView(generic.DetailView):
     model = Question
     template_name = "polls/results.html"
+
+
+
+# def home(request):
+#     return HttpResponse("hello all Lakshya soni this side for my first django app. ")

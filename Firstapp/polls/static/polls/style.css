@@ -1,7 +1,8 @@
 body {
-    background: white url("climber.jpg") no-repeat  ;
+    background: rgba(193, 177, 95, 0.482) ;
 } 
 
 li a {
-    color: green;
+    color: aliceblue;
+    
 }
