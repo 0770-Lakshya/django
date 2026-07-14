@@ -6,7 +6,7 @@ body {
     font-family: Arial, sans-serif;
 }
 
-/* ---- Index Page ---- */
+/* ---- Index Page Styles ---- */
 .index-page {
     display: flex;
     justify-content: center;
@@ -48,7 +48,7 @@ body {
     color: #555;
 }
 
-/* ---- Detail Page ---- */
+/* ---- Detail Page Styles ---- */
 .detail-page {
     display: flex;
     justify-content: center;
@@ -104,7 +104,7 @@ body {
     background-color: #45a049;
 }
 
-/* ---- Results Page ---- */
+/* ---- Results Page Styles ---- */
 .results-page {
     display: flex;
     flex-direction: column;   /* stack downward */
@@ -133,7 +133,7 @@ body {
     padding: 12px;
     border-radius: 6px;
     font-size: 1.1em;
-    text-align: center;   /* center text inside each result */
+    text-align: center;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     display: block;
 }
