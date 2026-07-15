@@ -99,3 +99,11 @@ class ResultsView(generic.DetailView):
 
 # def home(request):
 #     return HttpResponse("hello all Lakshya soni this side for my first django app. ")
+# def home_page(request):
+#     # This matches your exact folder structure: templates/polls/index.html
+#     return render(request, 'polls/index.html')
+def home_page(request):
+    # Fetch questions from your database so the HTML file can read them
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    context = {'latest_question_list': latest_question_list}
+    return render(request, 'polls/index.html', context)

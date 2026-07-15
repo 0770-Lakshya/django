@@ -20,9 +20,11 @@ from django.contrib import admin
 from django.urls import include, path
 from debug_toolbar.toolbar import debug_toolbar_urls
 from django.urls import include ,path
+from polls import views as poll_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('polls/',include("polls.urls")),
+    path('', poll_views.home_page, name='home'),  
 
 ]+ debug_toolbar_urls()
