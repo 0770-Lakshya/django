@@ -54,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 
 ]
 TESTING = "test" in sys.argv or "PYTEST_VERSION" in os.environ
@@ -134,6 +135,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage
 # STATICFILES_DIRS = [BASE_DIR / "static"]  # if you have a global static folder
 INTERNAL_IPS = [
     # ...
