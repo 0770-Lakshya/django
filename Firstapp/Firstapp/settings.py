@@ -170,7 +170,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
     
 }   
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 
 # Where to redirect users after logging in
 LOGIN_REDIRECT_URL = '/' 
@@ -204,5 +204,5 @@ LOGOUT_REDIRECT_URL = 'account_login'
 LOGIN_REDIRECT_URL = '/polls/'
 SOCIALACCOUNT_LOGIN_ON_GET = True
 SOCIALACCOUNT_AUTO_SIGNUP = True
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '://onrender.com', "*"]
+ALLOWED_HOSTS = ["*"]
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
