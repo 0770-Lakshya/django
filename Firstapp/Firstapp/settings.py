@@ -170,8 +170,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
     
 }   
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
-
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'
 # Where to redirect users after logging in
 LOGIN_REDIRECT_URL = '/' 
 LOGOUT_REDIRECT_URL = '/'
