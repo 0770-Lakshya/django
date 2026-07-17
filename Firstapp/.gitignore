@@ -1,0 +1,11 @@
+# .vscode
+# node_modules
+# client_secret.json
+# .env
+
+.env
+client_secret.json
+# Firstapp/.env
+# Firstapp/client_secret.json
+**/client_secret.json
+**/.env

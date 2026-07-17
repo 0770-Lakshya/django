@@ -1,4 +1,4 @@
-<body class="index-page">
+{% comment %} {% comment %} <body class="index-page">
 {% load static %}
 
 
@@ -13,4 +13,168 @@
     </ul>
 {% else %}
     <p>No polls are available.</p>
-{% endif %}
+{% endif %} {% endcomment %}
+{% comment %} {% load socialaccount %}
+<body class="index-page">
+    {% load static %}
+    
+    <!-- User Authentication Header Bar -->
+    <div style="background: #f4f4f4; padding: 10px; margin-bottom: 20px;">
+        {% if user.is_authenticated %}
+            <p>Welcome, <strong>{{ user.username }}</strong>! <a href="{% url 'account_logout' %}">Sign Out</a></p>
+        {% else %}
+            <p>You are not logged in. <a href="{% provider_login_url 'google' %}"><strong>Sign In with Google</strong></a></p>
+        {% endif %}
+    </div>
+
+    <!-- Your existing polls display code -->
+    {% if latest_question_list %}
+        <ul>
+            {% for question in latest_question_list %}
+                <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No polls are available.</p>
+    {% endif %}
+</body>
+ {% endcomment %} 
+ {% comment %} {% load socialaccount %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polls Application</title>
+    <!-- Modern style integration -->
+    <link rel="stylesheet" href="{% static 'polls/style.css' %}">
+</head>
+<body class="index-page">
+
+    {% if user.is_authenticated %}
+        <!-- 1. DISPLAY SECURE CONTENT ONLY IF LOGGED IN -->
+        <div style="background: #f4f4f4; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; font-family: sans-serif;">
+            <span>Welcome, <strong>{{ user.username }}</strong>!</span>
+            <a href="{% url 'account_logout' %}" style="color: #e53e3e; text-decoration: none; font-weight: bold;">Sign Out</a>
+        </div>
+        
+        <h2 style="font-family: sans-serif; color: #2d3748; margin-bottom: 15px;">Available Polls</h2>
+        {% if latest_question_list %}
+            <ul style="font-family: sans-serif; line-height: 1.8;">
+                {% for question in latest_question_list %}
+                    <li><a href="{% url 'polls:detail' question.id %}" style="color: #2b6cb0; text-decoration: none; font-weight: 500;">{{ question.question_text }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p style="font-family: sans-serif; color: #718096;">No polls are available right now.</p>
+        {% endif %}
+
+    {% else %}
+        <!-- 2. REDIRECT / SIGN IN PROMPT ONLY IF LOGGED OUT -->
+        <div style="text-align: center; margin-top: 100px; font-family: sans-serif;">
+            <h2 style="color: #2d3748; margin-bottom: 10px;">Access Denied</h2>
+            <p style="color: #718096; margin-bottom: 25px;">You must be authenticated to view the questions list.</p>
+            <a href="{% provider_login_url 'google' %}" style="padding: 12px 24px; background: #2b6cb0; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; box-shadow: 0 4px 6px rgba(43, 108, 176, 0.2);">
+                Sign In with Google
+            </a>
+        </div>
+    {% endif %}
+
+</body>
+</html>
+ {% endcomment %}
+ 
+
+
+
+
+
+
+
+
+ {% load static %}
+
+ {% load socialaccount %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polls Application Dashboard</title>
+    <!-- Link to external clean styles -->
+    <link rel="stylesheet" href="{% static 'polls/style.css' %}">
+</head>
+<body>
+
+    {% if user.is_authenticated %}
+        <!-- 1. AUTHORIZED USER WORKSPACE CONTAINER -->
+        <div class="dashboard-wrapper">
+            
+            <!-- Secure Header Bar -->
+            <header class="app-header">
+                <div class="user-profile">
+                    <div class="avatar-circle">
+                        {{ user.username|slice:":1"|upper }}
+                    </div>
+                    <span class="welcome-msg">Welcome back, <strong>{{ user.username }}</strong>!</span>
+                </div>
+                <a href="{% url 'account_logout' %}" class="btn-logout">Sign Out</a>
+            </header>
+
+            <!-- Main Content Grid Area -->
+            <main class="dashboard-body">
+                <div class="polls-card">
+                    <div class="card-header">
+                        <h2>Active Polls & Questions</h2>
+                        <span class="poll-count">Live</span>
+                    </div>
+                    
+                    {% if latest_question_list %}
+                        <ul class="clean-poll-list">
+                            {% for question in latest_question_list %}
+                                <li class="clean-poll-item">
+                                    <a href="{% url 'polls:detail' question.id %}" class="poll-action-card">
+                                        <span class="question-text">{{ question.question_text }}</span>
+                                        <span class="arrow-icon">→</span>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <div class="empty-state">
+                            <p>No active polls are available at this moment.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </main>
+        </div>
+
+    {% else %}
+        <!-- 2. UNAUTHORIZED / ACCESS DENIED GATE -->
+        <div class="login-wrapper">
+            <div class="login-card">
+                <div class="lock-icon">🔒</div>
+                <h2>Authentication Required</h2>
+                <p>Please connect your profile securely to browse the active voting cards.</p>
+                {% comment %} <a href="{% provider_login_url 'google' %}" class="google-auth-btn">
+    <!-- Added explicit inline width and height styles to prevent it from blowing up -->
+    <svg class="google-svg" style="width: 20px; height: 20px; min-width: 20px; display: inline-block; vertical-align: middle; margin-right: 10px;" viewBox="0 0 24 24">
+        <path fill="#EA4335" d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.67 1.54 15.01 1 12 1 7.28 1 3.26 3.73 1.34 7.71l3.87 3a7.16 7.16 0 0 1 6.79-5.67z"/>
+        <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.34H12v4.44h6.44a5.5 5.5 0 0 1-2.39 3.61v3h3.85c2.26-2.08 3.59-5.14 3.59-8.71z"/>
+        <path fill="#FBBC05" d="M5.21 14.71a7.1 7.1 0 0 1 0-4.42l-3.87-3A11.94 11.94 0 0 0 1 12c0 1.77.39 3.46 1.09 4.98l4.12-3.27z"/>
+        <path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.91l-3.85-3c-1.1.74-2.5 1.18-4.11 1.18-3.15 0-5.81-2.13-6.76-5.01l-4.12 3.2A11.96 11.96 0 0 0 12 23z"/>
+    </svg>
+    Continue with Google
+</a> {% endcomment %}
+<!-- Clean up your login action anchor tag inside index.html -->
+    <a href="{% provider_login_url 'google' %}" class="google-auth-btn" style="display: inline-flex; align-items: center; justify-content: center; width: 100%; background: #ffffff; color: #374151; font-weight: 600; padding: 14px; border: 1px solid #d1d5db; border-radius: 12px; text-decoration: none;">
+        Continue with Google
+    </a>
+
+            </div>
+        </div>
+    {% endif %}
+
+</body>
+</html>

@@ -12,23 +12,31 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 import os,sys
 from pathlib import Path
+import environ
+import os
 
+# Initialize environment variables
+env = environ.Env()
+# environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 from django import template
 from django.core.checks import templates
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-f5q(z3qpjxz!v88u)$o%g(p7h9c65bxa5^-9rhde-dglb_x4)z'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=False)
+
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com']
+GOOGLE_CLIENT_ID = env('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = env('GOOGLE_CLIENT_SECRET')
 
 
 
@@ -44,6 +52,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     # 'django.contrib.staticfiles',
     # "debug_toolbar",
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 
 ]
 TESTING = "test" in sys.argv or "PYTEST_VERSION" in os.environ
@@ -132,15 +146,63 @@ USE_I18N = True
 USE_TZ = True
 
 
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SOCIALACCOUNT_PROVIDERS = {
+    
+    'google': {
+        'APP': {
+            'client_id': GOOGLE_CLIENT_ID,
+            'secret': GOOGLE_CLIENT_SECRET,
+            'key': ''
+        },
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+    
+}   
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'
+
+# Where to redirect users after logging in
+LOGIN_REDIRECT_URL = '/' 
+LOGOUT_REDIRECT_URL = '/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-# STATICFILES_DIRS = [BASE_DIR / "static"]  # if you have a global static folder
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+]# STATICFILES_DIRS = [BASE_DIR / "static"]  # if you have a global static folder
 INTERNAL_IPS = [
     # ...
     "127.0.0.1",
     # ...
 ]
+
+# Google OAuth Configuration
+GOOGLE_CLIENT_ID = env('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = env('GOOGLE_CLIENT_SECRET')
+
+SOCIALACCOUNT_AUTO_SIGNUP = True
+ACCOUNT_SIGNUP_FIELDS = None
+SITE_ID = 1
+
+LOGIN_URL = 'account_login'
+LOGOUT_REDIRECT_URL = 'account_login'
+LOGIN_REDIRECT_URL = '/polls/'
+SOCIALACCOUNT_LOGIN_ON_GET = True
+SOCIALACCOUNT_AUTO_SIGNUP = True
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '://onrender.com']
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

@@ -14,6 +14,7 @@ from django.urls import reverse
 
 from django.template import loader
 from django.shortcuts import get_object_or_404, render
+from django.contrib.auth.decorators import login_required
 
 # def index(request):
 #     return HttpResponse("Hello, world. You're at the polls index.")
@@ -21,6 +22,7 @@ from django.shortcuts import get_object_or_404, render
 #     latest_question_list = Question.objects.order_by("-pub_date")[:5]
 #     context = {"latest_question_list": latest_question_list}
 #     return render(request, "polls/index.html", context)
+@login_required
 def index(request):
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
     output = ", ".join([q.question_text for q in latest_question_list])
@@ -31,11 +33,12 @@ def index(request):
 #     except Question.DoesNotExist:
 #         raise Http404("Question does not exist")
 #     return render(request, "polls/detail.html", {"question": question})
+@login_required
 def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     return render(request, "polls/detail.html", {"question": question})
 
-
+@login_required
 def results(request, question_id):
     response = "You're looking at the results of question %s."
     return HttpResponse(response % question_id)
