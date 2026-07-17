@@ -1,0 +1,62 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Google Account</title>
+    <!-- Connects directly to your central stylesheet architecture -->
+    <link rel="stylesheet" href="{% static 'polls/style.css' %}">
+</head>
+<body>
+
+    <div class="login-wrapper" style="min-height: 85vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
+        <div class="login-card" style="background: #ffffff; padding: 40px; border-radius: 24px; text-align: left; box-shadow: 0 10px 25px rgba(0,0,0,0.05); max-width: 440px; width: 100%;">
+            
+            <div style="text-align: center; margin-bottom: 24px;">
+                <div class="lock-icon" style="font-size: 2.5rem; margin-bottom: 8px; text-align: center;">🚀</div>
+                <h2 style="font-size: 1.5rem; color: #111827; font-weight: 700; margin-bottom: 4px;">Final Step</h2>
+                <p style="color: #6b7280; font-size: 0.9rem; line-height: 1.4;">You are about to use your Google account to login to <strong>localhost</strong>. Please choose a username to finish setting up your account profile.</p>
+            </div>
+
+            <!-- Social Account Signup Form -->
+            <form class="signup" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
+                {% csrf_token %}
+                
+                <!-- Display structural form fields dynamically -->
+                <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;">
+                    {% for field in form %}
+                        <div>
+                            <label for="{{ field.id_for_label }}" style="display: block; font-size: 0.85rem; font-weight: 600; color: #374151; margin-bottom: 6px;">{{ field.label }}</label>
+                            
+                            <!-- Custom formatted input container fields -->
+                            <input type="{% if 'email' in field.name %}email{% else %}text{% endif %}" 
+                                   name="{{ field.name }}" 
+                                   id="{{ field.id_for_label }}" 
+                                   value="{{ field.value|default_if_none:'' }}"
+                                   placeholder="Enter your {{ field.label|lower }}"
+                                   {% if field.field.required %}required{% endif %}
+                                   style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 10px; font-size: 0.95rem; outline: none; background: #f9fafb; font-family: inherit;">
+                            
+                            {% if field.errors %}
+                                <span style="color: #ef4444; font-size: 0.8rem; display: block; margin-top: 4px;">{{ field.errors.0 }}</span>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                {% endif %}
+
+                <button type="submit" class="btn-logout" style="width: 100%; background: #2b6cb0; color: white; border: none; padding: 14px; font-weight: 600; border-radius: 12px; cursor: pointer; text-align: center;">
+                    Finish Sign Up
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+</body>
+</html>
