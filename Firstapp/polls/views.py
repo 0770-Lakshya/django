@@ -82,7 +82,7 @@ class IndexView(generic.ListView):
         published in the future).
         """
         return Question.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")[
-            :5
+            :
         ]
         
 from django.utils import timezone
@@ -107,6 +107,6 @@ class ResultsView(generic.DetailView):
 #     return render(request, 'polls/index.html')
 def home_page(request):
     # Fetch questions from your database so the HTML file can read them
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    latest_question_list = Question.objects.order_by('-pub_date')[:]
     context = {'latest_question_list': latest_question_list}
     return render(request, 'polls/index.html', context)
