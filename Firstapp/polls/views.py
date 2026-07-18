@@ -24,7 +24,7 @@ from django.contrib.auth.decorators import login_required
 #     return render(request, "polls/index.html", context)
 @login_required
 def index(request):
-    latest_question_list = Question.objects.order_by("-pub_date")[:5]
+    latest_question_list = Question.objects.order_by("-pub_date")[:]
     output = ", ".join([q.question_text for q in latest_question_list])
     return HttpResponse(output)
 # def detail(request, question_id):
